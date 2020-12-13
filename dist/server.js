@@ -6,6 +6,11 @@ const env_1 = require("./environment/env");
 const mongoose = require("mongoose");
 const BattleRouter_1 = require("./routers/BattleRouter");
 var bodyParser = require('body-parser');
+const cors = require("cors");
+const options = {
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token", "Authorization"], credentials: true, methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+    origin: '*', preflightContinue: false
+};
 //We are here following Single responsibility principle such that every method in our class is only executing single responsibility.
 class Server {
     constructor() {
@@ -16,6 +21,7 @@ class Server {
     setConfiguration() {
         this.connectMongoDB();
         this.configureBodyParser();
+        this.app.use(cors(options));
     }
     connectMongoDB() {
         const databaseUrl = env_1.getEnvironmentVariables().db_url;

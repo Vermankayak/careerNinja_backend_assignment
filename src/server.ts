@@ -3,7 +3,13 @@ import {getEnvironmentVariables} from './environment/env'
 import * as mongoose from 'mongoose'
 import BattleRouter from './routers/BattleRouter'
 var bodyParser = require('body-parser')
+import * as cors from 'cors'
 
+
+const options:cors.CorsOptions = {
+   allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token", "Authorization"], credentials: true, methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+   origin: '*',  preflightContinue: false
+}
 
 //We are here following Single responsibility principle such that every method in our class is only executing single responsibility.
 export class Server{
@@ -15,6 +21,7 @@ export class Server{
   setConfiguration() {
       this.connectMongoDB();
       this.configureBodyParser()
+      this.app.use(cors(options));
   }
   connectMongoDB() {
     const databaseUrl = getEnvironmentVariables().db_url
